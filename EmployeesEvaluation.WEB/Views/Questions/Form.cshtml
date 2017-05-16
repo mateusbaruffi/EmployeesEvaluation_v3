@@ -1,158 +1,160 @@
 
 @model EmployeesEvaluation.WEB.Dtos.QuestionDto
-@{
-    ViewData["Title"] = "New Question";
-}
 
-<h2>@ViewData["Title"].</h2>
-
-<form asp-controller="Questions" asp-action="Save" enctype="multipart/form-data" method="post" class="form-horizontal">
-    <h4>Create new question.</h4>
-    <hr />
-    @if (@Model.Id != 0)
-    {
-    <input asp-for="Id" type="hidden" />
-    }
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="QuestionType" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <select asp-for="QuestionType" asp-items="Html.GetEnumSelectList<QuestionType>()" class="form-control">
-                <option value="">Select a question type</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="OwnershipId" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <select asp-for="OwnershipId" asp-items="@Model.HR_DM_Managers" class="form-control">
-                <option value="">Select the ownership</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Description" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Description" class="form-control" />
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-    </div>
+<div class="location-bar">
+    <h2>Questions / New</h2>
+</div>
 
 
-    <div class="form-group" id="question_limit_wrapper" style="display:none">
-        <label asp-for="Limit" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Limit" class="form-control" />
-            <span asp-validation-for="Limit" class="text-danger"></span>
-        </div>
-    </div>
+<div class="row panel">
 
+    <form asp-controller="Questions" asp-action="Save" enctype="multipart/form-data" method="post" class="form-horizontal">
 
-    @if (Model.LikertAnswers != null)
-    {
-        @for (int i = 0; i < Model.LikertAnswers.Count; i++)
+        @if (@Model.Id != 0)
         {
-            <div class="form-group">
-                <label asp-for="@Model.LikertAnswers[i].Description" class="col-md-2 control-label">Answer @(i + 1)  </label>
-                <div class="col-md-10">
-                    <input asp-for="@Model.LikertAnswers[i].Description" class="form-control" />
-                    <span asp-validation-for="@Model.LikertAnswers[i].Description" class="text-danger"></span>
-                </div>
-            </div>
+            <input asp-for="Id" type="hidden" />
         }
-    }
-
-    <div id="answers_container"></div>
-
-    <div class="form-group">
-        <div class="col-md-3 col-md-offset-2">
-            @if (Model.QuestionType == QuestionTypeDto.LikertScale)
-            {
-                <button id="addAnswer" type="button" class="btn-default" title="Add New LikertAnswer"><i class="fa fa-plus" aria-hidden="true"></i></button>
-            }
-            else
-            {
-                <button id="addAnswer" type="button" class="btn-default" style="display: none;"><i class="fa fa-plus" aria-hidden="true"></i></button>
-            }
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="QuestionType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="QuestionType" asp-items="Html.GetEnumSelectList<QuestionType>()" class="form-control">
+                    <option value="">Select a question type</option>
+                </select>
+            </div>
         </div>
-        
-    </div>
-    <p>&nbsp;</p>
+
+        <div class="form-group">
+            <label asp-for="OwnershipId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="OwnershipId" asp-items="@Model.HR_DM_Managers" class="form-control">
+                    <option value="">Select the ownership</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group" id="question_limit_wrapper" style="display:none">
+            <label asp-for="Limit" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Limit" class="form-control" />
+                <span asp-validation-for="Limit" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        @if (Model.LikertAnswers != null)
+        {
+            @for (int i = 0; i < Model.LikertAnswers.Count; i++)
+            {
+                <div class="form-group">
+                    <label asp-for="@Model.LikertAnswers[i].Description" class="col-md-2 control-label">Answer @(i + 1)  </label>
+                    <div class="col-md-10">
+                        <input asp-for="@Model.LikertAnswers[i].Description" class="form-control" />
+                        <span asp-validation-for="@Model.LikertAnswers[i].Description" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+        }
+
+        <div id="answers_container"></div>
+
+        <div class="form-group">
+            <div class="col-md-3 col-md-offset-2">
+                @if (Model.QuestionType == QuestionTypeDto.LikertScale)
+            {
+                    <button id="addAnswer" type="button" class="btn-default" title="Add New LikertAnswer"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                }
+                else
+                {
+                    <button id="addAnswer" type="button" class="btn-default" style="display: none;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                }
+            </div>
+
+        </div>
+        <p>&nbsp;</p>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>
-</form>
-<script type="text/template" id="answerItem">
-    <div class="form-group">
-        <label asp-for="LikertAnswers[{i}].Description" class="col-md-2 control-label">Answer {i_display} </label>
-        <div class="col-md-10">
-            <input name="LikertAnswers[{i}].Description" class="form-control" />
-        </div>
+    </form>
     </div>
-</script>
-
-@section scripts {
-
-@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-  
-    <script>
-        $(document).ready(function () {
-
-            var likertVal = 1;
-            var openEnded = 2;
-            var initialQuestionType = $('#QuestionType').val();
-
-            // if questionType is OpenEnded show limit field
-            if (initialQuestionType == openEnded)
-                $('#question_limit_wrapper').show();
-    
-            // get the answer template
-            var template = $('#answerItem').html();
-            // set the number of existing answers
-            var i = $('input[id^="LikertAnswers_"]').length;
-            
-            $('#addAnswer').click(function (e) {
-                e.preventDefault();
-                // when click on addAnswer button, add a new answer template and set the index inside it.
-                appendAnswer(i);
-                i++;
-            });
-
-            $('#QuestionType').change(function () { 
-                var current_val = $(this).val();
-                // show likert controls if QuestionType is equal likertscale
-                if (current_val == likertVal) {
-                    $('#answers_container').show();
-                    if (i == 0) {
-                        appendAnswer(i);
-                        i++;
-                    }
-                    $('#addAnswer').show();
-                } else {
-                    $('#addAnswer').hide();
-                    removeAnswer();
-                    i = $('input[id^="LikertAnswers_"]').length;
-                }
-
-                (current_val == openEnded) ? $('#question_limit_wrapper').show() : $('#question_limit_wrapper').hide();
-    
-            });
-
-            function appendAnswer(i) {
-                $('#answers_container').append(template.replace(/{i}/g, i).replace(/{i_display}/g, (i + 1)));
-            }
-
-            function removeAnswer() {
-                $('#answers_container').children().remove();
-            }
-
-            
-        });
+    <script type="text/template" id="answerItem">
+        <div class="form-group">
+            <label asp-for="LikertAnswers[{i}].Description" class="col-md-2 control-label">Answer {i_display} </label>
+            <div class="col-md-10">
+                <input name="LikertAnswers[{i}].Description" class="form-control" />
+            </div>
+        </div>
     </script>
 
-}
+    @section scripts {
+
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+        <script>
+            $(document).ready(function () {
+
+                var likertVal = 1;
+                var openEnded = 2;
+                var initialQuestionType = $('#QuestionType').val();
+
+                // if questionType is OpenEnded show limit field
+                if (initialQuestionType == openEnded)
+                    $('#question_limit_wrapper').show();
+
+                // get the answer template
+                var template = $('#answerItem').html();
+                // set the number of existing answers
+                var i = $('input[id^="LikertAnswers_"]').length;
+
+                $('#addAnswer').click(function (e) {
+                    e.preventDefault();
+                    // when click on addAnswer button, add a new answer template and set the index inside it.
+                    appendAnswer(i);
+                    i++;
+                });
+
+                $('#QuestionType').change(function () {
+                    var current_val = $(this).val();
+                    // show likert controls if QuestionType is equal likertscale
+                    if (current_val == likertVal) {
+                        $('#answers_container').show();
+                        if (i == 0) {
+                            appendAnswer(i);
+                            i++;
+                        }
+                        $('#addAnswer').show();
+                    } else {
+                        $('#addAnswer').hide();
+                        removeAnswer();
+                        i = $('input[id^="LikertAnswers_"]').length;
+                    }
+
+                    (current_val == openEnded) ? $('#question_limit_wrapper').show() : $('#question_limit_wrapper').hide();
+
+                });
+
+                function appendAnswer(i) {
+                    $('#answers_container').append(template.replace(/{i}/g, i).replace(/{i_display}/g, (i + 1)));
+                }
+
+                function removeAnswer() {
+                    $('#answers_container').children().remove();
+                }
+
+
+            });
+        </script>
+
+    }
 

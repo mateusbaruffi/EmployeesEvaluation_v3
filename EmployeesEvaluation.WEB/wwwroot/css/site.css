@@ -118,7 +118,10 @@ a {
     margin: 0 10px;
     border: 1px solid #dddddd;
 }
-    
+
+.panel-form {
+    padding: 40px;
+}    
 
 
 
