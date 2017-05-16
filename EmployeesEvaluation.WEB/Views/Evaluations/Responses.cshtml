@@ -1,10 +1,12 @@
 
+<div class="location-bar">
+    <h2>Evaluations / Responses</h2>
+</div>
 
-<h2>Evaluation Responses</h2>
 
-<div class="row">
+<div class="row panel">
     <div class="col-xs-18 col-md-12">
-                @(Html.Kendo().Grid<EmployeesEvaluation.WEB.Dtos.EvaluationResponseDto>()
+        @(Html.Kendo().Grid<EmployeesEvaluation.WEB.Dtos.EvaluationResponseDto>()
                 .Name("EvaluationResponses")
                 .Columns(columns =>
                 {
@@ -27,7 +29,7 @@
                     .Read(read => read.Action("ListResponses", "Evaluations"))
 
                 ).Deferred()
-                )
+        )
 
         @* All initialization scripts are rendered to the bottom of the page, see _Layout.cshtml *@
         @section scripts {
