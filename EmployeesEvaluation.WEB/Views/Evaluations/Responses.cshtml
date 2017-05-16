@@ -1,0 +1,37 @@
+
+
+<h2>Evaluation Responses</h2>
+
+<div class="row">
+    <div class="col-xs-18 col-md-12">
+                @(Html.Kendo().Grid<EmployeesEvaluation.WEB.Dtos.EvaluationResponseDto>()
+                .Name("EvaluationResponses")
+                .Columns(columns =>
+                {
+                    columns.Bound(r => r.Evaluation.Title);
+                    columns.Bound(r => r.Employee.Email).Title("Employee");
+                    columns.Bound(r => r.Id).Title(" ").Filterable(false).ClientTemplate("<a class='k-button k-button-icontext' href='/Evaluations/ShowResponse/#: Id #'>VIEW</a>").Width(125);
+
+                })
+
+                .Pageable()
+                .Sortable()
+                .Scrollable()
+                .Filterable()
+                .HtmlAttributes(new { style = "height:550px;" })
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Model(p => p.Id(m => m.Id))
+                    .ServerOperation(false)
+                    .PageSize(20)
+                    .Read(read => read.Action("ListResponses", "Evaluations"))
+
+                ).Deferred()
+                )
+
+        @* All initialization scripts are rendered to the bottom of the page, see _Layout.cshtml *@
+        @section scripts {
+            @Html.Kendo().DeferredScripts()
+        }
+    </div>
+</div>

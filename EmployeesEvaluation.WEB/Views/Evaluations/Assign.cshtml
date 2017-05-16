@@ -1,0 +1,113 @@
+
+@model EmployeesEvaluation.WEB.Dtos.EvaluationAssignedDto
+@{
+    ViewData["Title"] = "Assign Evaluation";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Evaluations" asp-action="AssignSave" method="post" class="form-horizontal">
+    
+    <hr />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Evaluation</label>
+        <div class="col-md-10">
+
+            @(Html.Kendo().DropDownListFor(model => model.EvaluationId)
+
+              .DataTextField("Title")
+              .DataValueField("Id")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("All", "Evaluations");
+                  });
+              })
+              .OptionLabel("Select an Evaluation")
+              .HtmlAttributes(new { style = "width: 50%", required = "required" }).Deferred()
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Department Manager</label>
+        <div class="col-md-10">
+            @(Html.Kendo().DropDownListFor(model => model.DepartmentManagerId)
+
+              .DataTextField("Email")
+              .DataValueField("Id")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("ListDepartmentManagers", "Users");
+                  });
+              })
+              .OptionLabel("Select a Department Manager")
+              .HtmlAttributes(new { style = "width: 50%" }).Deferred()
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Employee</label>
+        <div class="col-md-10">
+            @(Html.Kendo().DropDownListFor(model => model.EmployeeId)
+
+                .DataTextField("Email")
+                .DataValueField("Id")
+                .AutoBind(false)
+                .OptionLabel("Select an Employee")
+                .HtmlAttributes(new { style = "width: 50%" })
+                .Deferred()
+            )
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+@section scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+  @Html.Kendo().DeferredScripts()
+    <script>
+        $(document).ready(function () {
+
+            $.validator.setDefaults({ ignore: '' });
+
+            $("#DepartmentManagerId").change(function () {
+
+                var empDropList = $('#EmployeeId').data("kendoDropDownList");
+                var Id = $("#DepartmentManagerId").val();
+
+                
+                $.ajax({
+                    url: '@Url.Action("GetEmployeesByDepartmentManagerId", "Users")',
+                    type: "Post",
+                    data: { departmentManagerId: Id },
+                    success: function (listItems) {
+                        console.log('seting data source: ' + listItems);
+                        empDropList.setDataSource(listItems);
+                    }
+
+                });
+
+            });
+        });
+    </script>
+
+}

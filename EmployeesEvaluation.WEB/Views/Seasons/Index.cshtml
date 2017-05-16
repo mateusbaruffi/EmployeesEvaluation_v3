@@ -1,0 +1,38 @@
+
+<div class="location-bar">
+    <h2>Seasons</h2>
+</div>
+
+
+<div class="row panel">
+    <div class="col-md-12">
+        @(Html.Kendo().Grid<EmployeesEvaluation.WEB.Dtos.SeasonDto>()
+                .Name("Seasons")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.Name);
+                    columns.Command(command => { command.Edit(); command.Destroy(); }).Width(225);
+                })
+                .ToolBar(toolbar => toolbar.Create().Text("New Season"))
+                .Pageable()
+                .Sortable()
+                .Scrollable()
+                .Filterable()
+                .HtmlAttributes(new { style = "height:550px;" })
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Model(p => p.Id(m => m.Id))
+                    .PageSize(20)
+                    .Read(read => read.Action("List", "Seasons"))
+                    .Create(create => create.Action("Create", "Seasons"))
+                    .Update(update => update.Action("Update", "Seasons"))
+                    .Destroy(delete => delete.Action("Delete", "Seasons"))
+                ).Deferred()
+        )
+
+        @* All initialization scripts are rendered to the bottom of the page, see _Layout.cshtml *@
+        @section scripts {
+            @Html.Kendo().DeferredScripts()
+        }
+    </div>
+</div>

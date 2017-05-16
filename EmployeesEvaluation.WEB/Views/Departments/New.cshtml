@@ -1,0 +1,14 @@
+@model Department
+
+<h2>New Department</h2>
+
+<div class="row">
+    <div class="col-xs-18 col-md-12">
+        
+        <form asp-controller="Departments" asp-action="Save" method="post">
+            Email:  <input asp-for="Name" /> <br />
+            
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+</div>
+</div>

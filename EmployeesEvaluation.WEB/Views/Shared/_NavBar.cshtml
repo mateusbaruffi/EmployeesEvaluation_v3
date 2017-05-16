@@ -1,0 +1,136 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using EmployeesEvaluation.Core.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Employees Evaluation</a>
+    </div>
+    <!-- /.navbar-header -->
+    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+        <ul class="nav navbar-top-links navbar-right">
+          
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-user">
+
+                    <li>
+                        <a asp-area="" asp-controller="Account" asp-action="Edit" asp-route-id="@UserManager.GetUserId(User)"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    </li>
+                    
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:{}" onclick="document.getElementById('logoutForm').submit();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+    </form>
+    <!-- /.navbar-top-links -->
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="sidebar-search">
+                    <div class="input-group custom-search-form">
+
+                        <span class="input-group-btn">
+
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard fa-fw"></i> Home</a>
+                </li>
+
+                @if (User.IsInRole("HRM"))
+                {
+                <li>
+                    <a asp-area="" asp-controller="Departments" asp-action="Index"><i class="fa fa-table fa-fw"></i> Departments</a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Seasons" asp-action="Index"><i class="fa fa-edit fa-fw"></i> Seasons</a>
+                </li>
+                }
+
+                <li>
+                    <a asp-area="" asp-controller="Evaluations" asp-action="Index"><i class="fa fa-edit fa-fw"></i> Evaluations<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        @if (User.IsInRole("HRM") || User.IsInRole("DM"))
+                        {
+                        <li>
+                            <a asp-area="" asp-controller="Evaluations" asp-action="Index">List Evaluations</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Evaluations" asp-action="New">New Evaluation</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Evaluations" asp-action="NewPolymer">New Evaluation Polymer</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Evaluations" asp-action="Assign">Assign Evaluation</a>
+                        </li>
+                        }
+                        @if (User.IsInRole("HRM"))
+                        {
+                        <li>
+                            <a asp-area="" asp-controller="Evaluations" asp-action="Report">Evaluation Reports</a>
+                        </li>
+                        }
+                        <li>
+                            <a asp-area="" asp-controller="Evaluations" asp-action="Responses">Responses</a>
+                        </li>                        
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+                @if (User.IsInRole("HRM") || User.IsInRole("DM"))
+                {
+                <li>
+                    <a asp-area="" asp-controller="Questions" asp-action="Index"><i class="fa fa-edit fa-fw"></i> Questions<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+
+                            <li>
+                                <a asp-area="" asp-controller="Questions" asp-action="Index">List Questions</a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Questions" asp-action="New">New Question</a>
+                            </li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Account" asp-action="Index"><i class="fa fa-edit fa-fw"></i> Users<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Index">List Users</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Register">New User</a>
+                        </li>
+
+                    </ul>
+                </li>
+                }
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>

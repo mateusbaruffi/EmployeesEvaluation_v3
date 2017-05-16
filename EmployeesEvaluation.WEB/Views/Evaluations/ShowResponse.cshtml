@@ -1,0 +1,77 @@
+
+@model EmployeesEvaluation.WEB.Dtos.EvaluationResponseDto
+@{
+    ViewData["Title"] =  @Model.Evaluation.Title;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+   
+    <hr />
+
+    <div class="form-group">
+        
+        <div class="col-md-12">
+          @Model.Evaluation.Introduction
+        </div>
+    </div>    
+
+    <p>&nbsp;</p>
+    
+    @foreach (var questionAnswer in Model.QuestionAnswers)
+    {
+        <div class="form-group">
+            <div class="col-md-12">
+                <h4>@questionAnswer.Question.Description</h4>
+            </div>
+        </div>
+        if (questionAnswer.Question.QuestionType == QuestionTypeDto.LikertScale)
+        {
+            @foreach (var likertAnswer in questionAnswer.Question.LikertAnswers)
+            {
+               
+                    <div class="col-md-12">
+                        
+                        <input disabled type="radio" value="@likertAnswer.Id" @( (likertAnswer.Id == questionAnswer.LikertAnswerId) ? "checked" : "" ) /> @likertAnswer.Description
+                    </div>
+              
+            }
+        }
+        else if (questionAnswer.Question.QuestionType == QuestionTypeDto.OpenEnded)
+        {
+            <div class="col-md-12">
+                @questionAnswer.OpenEndedAnswer
+            </div>
+        }
+        else
+        {
+            <div class="col-md-12">
+                <a href="~/uploads/@questionAnswer.FileName" target="_blank">Download Answer</a>
+            </div>
+        }
+
+
+
+        <p>&nbsp;</p>
+    <hr />
+    }
+   
+
+
+        <p>&nbsp;</p>
+        <div class="col-md-12">
+            @Model.Evaluation.Disclosure
+        </div>
+<p>&nbsp;</p><p>&nbsp;</p>
+
+
+
+
+
+@section scripts {
+  
+    <script>
+
+    </script>
+
+}

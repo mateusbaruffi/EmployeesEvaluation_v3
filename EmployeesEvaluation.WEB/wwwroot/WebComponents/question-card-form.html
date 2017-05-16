@@ -1,0 +1,151 @@
+﻿<link rel="import" href="/lib/polymer/polymer.html" />
+<link rel="import" href="/lib/paper-dropdown-menu/paper-dropdown-menu.html" />
+<link rel="import" href="/lib/paper-item/paper-item.html" />
+<link rel="import" href="/lib/paper-listbox/paper-listbox.html" />
+<link rel="import" href="/lib/paper-input/paper-input.html" />
+<link rel="import" href="/lib/paper-button/paper-button.html" />
+<link rel="import" href="/lib/paper-icon-button/paper-icon-button.html" />
+<link rel="import" href="/lib/iron-icon/iron-icon.html" />
+<link rel="import" href="/lib/iron-icons/iron-icons.html" />
+<link rel="import" href="/lib/iron-iconset-svg/iron-iconset-svg.html" />
+<link rel="import" href="/lib/paper-styles/paper-styles.html" />
+<link rel="import" href="/lib/iron-ajax/iron-ajax.html" />
+<link rel="import" href="/lib/iron-input/iron-input.html" />
+<link rel="import" href="/lib/iron-form/iron-form.html" />
+
+
+<dom-module id="question-card-form">
+    <template>
+        <style>
+            .card {
+               
+                padding: 16px;
+                color: #757575;
+                border-radius: 5px;
+                background-color: #fff;
+                box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+            #answers_container {
+                padding: 22px;
+                color: #757575;
+                border-radius: 3px;
+                border: dotted 1px #f1f1f1;
+                background-color: #fff;
+            }
+            .input {
+                width: 60%;
+            }
+        </style>
+
+        <iron-ajax id="getQuestionTypesAjax"
+                   auto
+                   method="get"
+                   url="http://localhost:63585/Api/Questions/GetQuestionTypes"
+                   handle-as="json"
+                   last-response="{{questionTypes}}"></iron-ajax>
+
+        <iron-ajax id="getOwnershipsAjax"
+                   auto
+                   method="get"
+                   url="http://localhost:63585/Api/Users/GetHrDmManagers"
+                   handle-as="json"
+                   last-response="{{ownerships}}"></iron-ajax>
+
+        <div class="card">
+            <paper-input name="Description" label="Description" value="{{questionForm.Description}}" required></paper-input>
+           
+            <paper-dropdown-menu label="Select Question Type" required>
+                <paper-listbox class="dropdown-content" selected="{{questionForm.QuestionType}}" attr-for-selected="value">
+                    <template is="dom-repeat" items="[[questionTypes]]" as="questionType">
+                        <paper-item value="[[questionType.Id]]">[[questionType.Name]]</paper-item>
+                    </template>
+                </paper-listbox>
+            </paper-dropdown-menu>
+                
+            <br />
+            <paper-dropdown-menu label="Select Ownership" required>
+                <paper-listbox class="dropdown-content" selected="{{questionForm.OwnershipId}}" attr-for-selected="value">
+                    <template is="dom-repeat" items="[[ownerships]]" as="ownership">
+                        <paper-item value="[[ownership.Id]]">[[ownership.Email]]</paper-item>
+                    </template>
+                </paper-listbox>
+            </paper-dropdown-menu>
+                
+            <paper-input class="input" name="Limit" label="Limit" bind-value="{{questionForm.Limit}}" hidden$="[[hideLimitField]]"></paper-input>
+            <br />
+
+            <div id="answers_container" hidden$="[[hideAnswersContainer]]">
+                <template is="dom-repeat" items="[[questionForm.LikertAnswers]]" as="likertAnswer">
+                    <paper-input class="likertAnswers" name="LikertAnswers[{{index}}].Description" label="Option {{displayIndex(index)}}" value="{{likertAnswer.Description}}" required></paper-input>
+                </template>
+
+                <paper-icon-button on-tap="addAnswer" icon="add-circle" title="Add New Option"></paper-icon-button>
+            </div>
+        </div>
+
+</template>
+</dom-module>
+<script>
+
+    var likertType = 1;
+    var openEndedType = 2;
+
+    Polymer({
+        is: 'question-card-form',
+        properties: {
+            questionForm: {
+                type: Object,
+                value: function () { return {} },
+                notify: true
+            },
+            hideAnswersContainer: {
+                type: Boolean,
+                value: true
+            },
+            hideLimitField: {
+                type: Boolean,
+                value: true
+            }
+        },
+        observers: [
+            '_questionTypeChanged(questionForm.QuestionType)'
+        ],
+        addAnswer: function () {
+            if (this.questionForm.LikertAnswers == undefined)
+                this.set('questionForm.LikertAnswers', [{ Description: '' }])
+            else
+                this.push('questionForm.LikertAnswers', { Description: '' });
+        },
+        removeAnswer: function (likert) {
+            var index = this.questionForm.LikertAnswers.indexOf(likert);
+            this.splice("questionForm.LikertAnswers", index, 1)
+        },
+        displayIndex: function (index) {
+            return index + 1;
+        },
+        _questionTypeChanged: function (selected, previous) {
+           
+            // show/hide likertAnswers
+            if (selected == likertType) {
+                if (this.questionForm.LikertAnswers == undefined)
+                    this.addAnswer();
+                this.hideAnswersContainer = false;
+            } else {
+                // clear likertAnswers array
+                if (this.questionForm.LikertAnswers != undefined)
+                    this.splice("questionForm.LikertAnswers", 0, this.questionForm.LikertAnswers.length)
+                this.hideAnswersContainer = true;
+            }
+            // show/hide limitField
+            this.hideLimitField = (selected == openEndedType) ? false : true;
+        }       
+       
+    });
+
+
+
+
+
+
+
+</script>

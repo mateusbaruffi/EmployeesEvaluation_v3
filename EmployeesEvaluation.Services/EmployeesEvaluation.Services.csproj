@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461</TargetFrameworks>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>EmployeesEvaluation.Service</AssemblyName>
+    <PackageId>EmployeesEvaluation.Service</PackageId>
+    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
+    <PackageTargetFallback Condition="'$(TargetFramework)'=='net461'">$(PackageTargetFallback);</PackageTargetFallback>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">1.0.4</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../EmployeesEvaluation.Core/EmployeesEvaluation.Core.csproj" />
+    <ProjectReference Include="../EmployeesEvaluation.Repository/EmployeesEvaluation.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

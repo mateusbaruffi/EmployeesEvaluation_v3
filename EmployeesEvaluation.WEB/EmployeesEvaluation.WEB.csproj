@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UserSecretsId>aspnet-EmployeesEvaluation.WEB-a5730dd2-6ba8-4870-806e-10de91008424</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\WebComponents\evaluation-form.html" />
+    <Content Include="wwwroot\WebComponents\question-card-viewer.html" />
+    <Content Include="wwwroot\WebComponents\question-card-form.html" />
+    <Content Include="wwwroot\WebComponents\question-card.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="1.16.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.1" />  
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.1" />    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0" PrivateAssets="All" />
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
+    
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
+    <PackageReference Include="SendGrid" Version="9.1.1" />
+
+    <PackageReference Include="Telerik.Reporting.Services.AspNetCore.Trial" Version="11.0.17.406" />
+    <PackageReference Include="Telerik.Reporting.Trial" Version="11.0.17.406" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2017.1.223" />
+    
+    <PackageReference Include="AutoMapper.Data" Version="1.0.0-beta1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../EmployeesEvaluation.Core/EmployeesEvaluation.Core.csproj" />
+    <ProjectReference Include="../EmployeesEvaluation.Services/EmployeesEvaluation.Services.csproj" />
+    <ProjectReference Include="../EmployeesEvaluation.Repository/EmployeesEvaluation.Repository.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Controllers\Api\" />
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="wwwroot\WebComponents\question-form.html" />
+  </ItemGroup>
+
+</Project>

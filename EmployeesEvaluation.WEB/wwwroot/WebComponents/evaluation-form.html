@@ -1,0 +1,231 @@
+﻿<link rel="import" href="/lib/polymer/polymer.html" />
+<link rel="import" href="/lib/paper-dropdown-menu/paper-dropdown-menu.html" />
+<link rel="import" href="/lib/paper-item/paper-item.html" />
+<link rel="import" href="/lib/paper-listbox/paper-listbox.html" />
+<link rel="import" href="/lib/paper-input/paper-input.html" />
+<link rel="import" href="/lib/paper-input/paper-textarea.html" />
+<link rel="import" href="/lib/paper-button/paper-button.html" />
+<link rel="import" href="/lib/paper-icon-button/paper-icon-button.html" />
+<link rel="import" href="/lib/iron-icon/iron-icon.html" />
+<link rel="import" href="/lib/iron-icons/iron-icons.html" />
+<link rel="import" href="/lib/iron-iconset-svg/iron-iconset-svg.html" />
+<link rel="import" href="/lib/paper-styles/paper-styles.html" />
+<link rel="import" href="/lib/iron-ajax/iron-ajax.html" />
+<link rel="import" href="/lib/iron-input/iron-input.html" />
+<link rel="import" href="/lib/iron-form/iron-form.html" />
+<link rel="import" href="/lib/paper-toolbar/paper-toolbar.html" />
+<link rel="import" href="/lib/paper-autocomplete/paper-autocomplete.html" />
+<link rel="import" href="question-card-form.html" />
+<link rel="import" href="question-card-viewer.html" />
+
+<dom-module id="evaluation-form">
+    <template>
+        <style>
+
+
+            paper-toolbar {
+                background-color: #4a4646;
+                margin: 2px 0px 20px 0px;
+                border-radius: 5px;
+               
+            }
+
+            paper-toolbar paper-icon-button {
+                margin-right: 20px;
+            }
+            paper-input-container {
+                color: azure;
+               
+            }
+
+            paper-autocomplete {
+                width: 100%;
+                color: #000000;
+                --paper-input-container-color: #868585;
+                --paper-input-container-focus-color: #f1f1f1;
+                --paper-input-container-input-color: #f1f1f1;
+            }
+        </style>
+
+        <iron-ajax id="findQuestionsByDescription"
+                   method="get"
+                   handle-as="json"
+                   on-response="handleFindQuestionsResponse"></iron-ajax>
+        
+        <iron-ajax id="getSingleQuestion"
+                   method="get"
+                   handle-as="json"
+                   on-response="handleSingleQuestionResponse"></iron-ajax>
+
+        <iron-ajax id="getDepartmentManagersAjax"
+                   auto
+                   method="get"
+                   url="http://localhost:63585/Api/Users/GetDepartmentManagers"
+                   handle-as="json"
+                   last-response="{{departmentManagers}}"></iron-ajax>
+
+        <iron-ajax id="getSeasonsAjax"
+                   auto
+                   method="get"
+                   url="http://localhost:63585/Api/Seasons/GetAll"
+                   handle-as="json"
+                   last-response="{{seasons}}"></iron-ajax>
+
+        <iron-ajax id="saveEvaluation"
+                   method="post"
+                   content-type="application/json"
+                   handle-as="json"
+                   on-response="handleSubmitResponse"
+                   on-error="handleSubmitError"></iron-ajax>
+        
+        <div class="card">
+            <form is="iron-form" method="post" action="/Api/Evaluations/Create" id="evaluationsForm" headers = '{"content-type":"application/json"}'>
+
+                <paper-dropdown-menu label="Select a Department Manager" required>
+                    <paper-listbox class="dropdown-content" selected="{{evaluationForm.DepartmentManagerId}}" attr-for-selected="value">
+                        <template is="dom-repeat" items="[[departmentManagers]]" as="departmentManager">
+                            <paper-item value="[[departmentManager.Id]]">[[departmentManager.Email]]</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                
+                <br />
+                <paper-dropdown-menu label="Select a Season" required>
+                    <paper-listbox class="dropdown-content" selected="{{evaluationForm.SeasonId}}" attr-for-selected="value">
+                        <template is="dom-repeat" items="[[seasons]]" as="season">
+                            <paper-item value="[[season.Id]]">[[season.Name]]</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                
+                <br />
+
+                <paper-input name="Title" label="Title" value="{{evaluationForm.Title}}" required></paper-input>
+                <br />
+                <paper-textarea label="Introduction" value="{{evaluationForm.Introduction}}" required></paper-textarea>
+                <br />
+                New Question Or Use an Existing One
+                <paper-toolbar>
+                
+                    <paper-icon-button on-tap="addQuestion"  icon="add-circle" title="Add New Question"></paper-icon-button>
+                    
+                   
+                    <paper-autocomplete text-property="Description" value-property="Id" bind-value="{{searchText}}" remote-source="true" min-length="2" placeholder="Enter a question description" label="Use existing Question" id="paperAutocomplete" always-float-lable="true"></paper-autocomplete>
+                    
+                </paper-toolbar>
+               
+                
+                <template is="dom-repeat" items="[[evaluationForm.Questions]]" as="question">
+
+                    <template is="dom-if" if="[[!question.Id]]">
+                        <question-card-form question-form="{{question}}"></question-card-form>
+                    </template>
+
+                    <template is="dom-if" if="[[question.Id]]">
+                        <question-card-viewer question-form="{{question}}"></question-card-viewer>
+                    </template>
+                    
+                    <hr />
+                   
+                </template>
+                <br />
+                <paper-textarea label="Disclosure" value="{{evaluationForm.Disclosure}}" required></paper-textarea>
+                
+                <br /><br /><br />
+                <paper-button raised on-tap="_submit">Submit</paper-button>
+                
+                <div class="output"></div>
+            </form>
+        </div>
+
+    </template>
+</dom-module>
+<script>
+
+
+    Polymer({
+        is: 'evaluation-form',
+        properties: {
+            evaluationForm: {
+                type: Object,
+                value: function () { return {} }
+            },
+            searchText: {
+                type: String,
+                observer: '_searchChanged'
+            }
+        },  
+        handleFindQuestionsResponse: function (event) {
+            var search = this.searchText;
+            var data = event.detail.response;
+           
+            // display autocomplete suggestions
+            this.$.paperAutocomplete.suggestions(data.filter(function (obj) {
+                return obj.Description.toLowerCase().indexOf(search) !== -1;
+            }));
+        },
+        _searchChanged: function () {
+            // This observer fire a request to search for existing questions
+            // generate the request if the number of characters in the input is greater than the min-length attr 
+            if (this.searchText.length > this.$.paperAutocomplete.minLength) {
+                console.log('send request');
+                var findQuestionsAjax = this.$.findQuestionsByDescription;
+                findQuestionsAjax.url = "http://localhost:63585/Api/Questions/FindBy/?text=" + this.searchText;
+                findQuestionsAjax.generateRequest();
+            }
+        },
+        onSelect: function (event) {  
+            // get the question data
+            var getQuestionAjax = this.$.getSingleQuestion;
+            getQuestionAjax.url = "http://localhost:63585/Api/Questions/GetSingle/?id=" + event.detail.value;
+            getQuestionAjax.generateRequest();
+        },
+        handleSingleQuestionResponse: function (event) {
+            if (this.evaluationForm.Questions == undefined)
+                this.set('evaluationForm.Questions', [event.detail.response])
+            else
+                this.push('evaluationForm.Questions', event.detail.response);
+        },
+        ready: function () {
+            this.listen(this.$.paperAutocomplete, 'autocomplete-selected', 'onSelect');
+        },
+        addQuestion: function () {
+            if (this.evaluationForm.Questions == undefined)
+                this.set('evaluationForm.Questions', [{}])
+            else
+                this.push('evaluationForm.Questions', { });
+        },
+        _submit: function (event) {
+
+            if (this.evaluationForm.Questions == undefined)
+                alert("You need create or select at least one question!");
+            else {
+                this.$.saveEvaluation.url = "http://localhost:63585/Api/Evaluations/Create";
+                this.$.saveEvaluation.body = this.evaluationForm;
+
+                if (Polymer.dom(event).localTarget.parentElement.validate()) {
+                    this.$.saveEvaluation.generateRequest();
+                    console.log("------ validated and request sent ---");
+                } else
+                    console.log("---- no validated");
+            }
+
+
+
+        },
+        handleSubmitResponse: function (event) {
+            console.log(event.detail.response);
+            window.location.href = "/Evaluations/Index"
+        }, 
+        handleSubmitError: function (event) {
+            console.log(event.detail);
+        }
+    });
+
+
+
+
+
+
+
+</script>

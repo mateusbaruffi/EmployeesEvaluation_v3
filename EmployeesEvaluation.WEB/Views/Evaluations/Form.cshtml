@@ -1,0 +1,100 @@
+
+@model EmployeesEvaluation.WEB.Dtos.EvaluationDto
+@{
+    ViewData["Title"] = "New Evaluation";
+}
+
+<h2>@ViewData["Title"].</h2>
+
+<form asp-controller="Evaluations" asp-action="Save" enctype="multipart/form-data" method="post" class="form-horizontal">
+    <h4>Create new evaluation.</h4>
+    <hr />
+    @if (@Model.Id != 0)
+    {
+    <input asp-for="Id" type="hidden" />
+    }
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+    <div class="form-group">
+        <label asp-for="DepartmentManagerId" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="DepartmentManagerId" asp-items="@Model.DepartmentManagers" class="form-control">
+                <option>Select a Department Manager</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SeasonId" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="SeasonId" asp-items="@Model.Seasons" class="form-control">
+                <option>Select a season</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Title" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Introduction" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <textarea asp-for="Introduction" class="form-control" rows="5" cols="40"></textarea>
+            <span asp-validation-for="Introduction" class="text-danger"></span>
+        </div>
+    </div>    
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Questions</label>
+        <div class="col-md-10">
+            <div class="demo-section k-content">
+
+
+                @(Html.Kendo().MultiSelectFor(model => model.QuestionIds)
+                  .DataTextField("Description")
+                  .DataValueField("Id")
+                  .Placeholder("Select questions...")
+                  .AutoBind(false)
+                  .Value(Model.Questions)
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("FindBy", "Questions");
+                      })
+                      .ServerFiltering(true);
+                  }).HtmlAttributes(new { style = "width:50%" }).Deferred()
+                )
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Disclosure" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <textarea asp-for="Disclosure" class="form-control" rows="5" cols="40"></textarea>
+            <span asp-validation-for="Disclosure" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+</form>
+
+
+@section scripts {
+  @Html.Kendo().DeferredScripts()
+    <script>
+
+    </script>
+
+}

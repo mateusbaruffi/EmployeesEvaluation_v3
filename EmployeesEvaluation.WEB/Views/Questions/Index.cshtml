@@ -1,0 +1,39 @@
+﻿
+<div class="location-bar">
+    <h2>Questions</h2>
+</div>
+
+
+<div class="row panel">
+    <div class="col-xs-18 col-md-12">
+        @(Html.Kendo().Grid<EmployeesEvaluation.WEB.Dtos.QuestionDto>()
+                .Name("Question")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.Description);
+                    columns.Bound(p => p.Id).Title(" ").Filterable(false).ClientTemplate("<a class='k-button k-button-icontext' href='/Questions/Edit/#: Id #'>EDIT</a>").Width(125);
+                    columns.Command(command => { command.Destroy(); }).Width(125);
+                })
+
+                .Pageable()
+                .Sortable()
+                .Scrollable()
+                .Filterable()
+                .HtmlAttributes(new { style = "height:550px;" })
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Model(p => p.Id(m => m.Id))
+                    .ServerOperation(false)
+                    .PageSize(20)
+                    .Read(read => read.Action("List", "Questions"))
+
+                    .Destroy(delete => delete.Action("Delete", "Questions"))
+                ).Deferred()
+        )
+
+        @* All initialization scripts are rendered to the bottom of the page, see _Layout.cshtml *@
+        @section scripts {
+            @Html.Kendo().DeferredScripts()
+        }
+    </div>
+</div>
