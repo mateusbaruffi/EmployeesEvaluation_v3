@@ -131,4 +131,8 @@ a {
     .carousel-caption {
         display: none;
     }
+
+    .panel-form {
+        padding: 10px;
+    }  
 }
