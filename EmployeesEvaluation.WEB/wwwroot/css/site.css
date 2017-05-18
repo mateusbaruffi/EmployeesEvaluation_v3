@@ -42,6 +42,10 @@ textarea {
     width: 100%;
 }
 
+.container {
+    margin-top: 150px;
+}
+
 #page-wrapper {
     padding: 0px;
     background-color: #f2f2f2;
@@ -72,23 +76,33 @@ textarea {
 }
 .sidebar ul li {
     border-bottom: none;
+    background-color: #222d32;
 }
 
+    .sidebar ul li a {
+        background-color: #222d32;
+        color: #b2b8ba;
+    }
 
 .sidebar ul li a:hover {
-    background-color: #222d32;
-    color: #ffffff;
+   
+    color: #FFFFFF;
 }
 
 .sidebar ul li a:active {
     background-color: #25a59a;
     color: #ffffff;
 }
+    .sidebar ul li a:visited {
+        background-color: #283339;
+        
+    }
 
 .sidebar ul li a.active {
     background-color: #25a59a;
     color: #ffffff;
 }
+
 
 a {
     color: #b2b8ba;
