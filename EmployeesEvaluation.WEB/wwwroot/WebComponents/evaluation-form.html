@@ -17,6 +17,8 @@
 <link rel="import" href="/lib/paper-autocomplete/paper-autocomplete.html" />
 <link rel="import" href="question-card-form.html" />
 <link rel="import" href="question-card-viewer.html" />
+<link rel="import" href="app-messages.html" />
+
 
 <dom-module id="evaluation-form">
     <template>
@@ -138,6 +140,10 @@
             </form>
         </div>
 
+
+        <app-messages class-name="{{messageType}}" toast-text="{{messageText}}" id="appMessages"></app-messages>
+        
+
     </template>
 </dom-module>
 <script>
@@ -215,10 +221,17 @@
         },
         handleSubmitResponse: function (event) {
             console.log(event.detail.response);
-            window.location.href = "/Evaluations/Index"
+            this.messageType = "toast-success";
+            this.messageText = "Evaluation was saved successfully!";
+            this.$.appMessages.openToast();
+
+            setTimeout(function () { window.location.href = "/Evaluations/Index"; }, 3000);
         }, 
         handleSubmitError: function (event) {
             console.log(event.detail);
+            this.messageType = "toast-error";
+            this.messageText = "Sorry, but something went wrong!";
+            this.$.appMessages.openToast();
         }
     });
 
