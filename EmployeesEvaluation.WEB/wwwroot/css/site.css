@@ -64,7 +64,7 @@ textarea {
 }
 
 .navbar-default {
-    background-color: #283339;
+   
     border-color: #283339;
 }
 .navbar {
@@ -74,15 +74,17 @@ textarea {
 .navbar-brand {
     color: #FFFFFF !important;
 }
+
+
 .sidebar ul li {
     border-bottom: none;
     background-color: #222d32;
 }
 
-    .sidebar ul li a {
-        background-color: #222d32;
-        color: #b2b8ba;
-    }
+.sidebar ul li a {
+    background-color: #222d32;
+    color: #b2b8ba;
+}
 
 .sidebar ul li a:hover {
    
@@ -93,10 +95,10 @@ textarea {
     background-color: #25a59a;
     color: #ffffff;
 }
-    .sidebar ul li a:visited {
-        background-color: #283339;
+.sidebar ul li a:visited {
+    background-color: #283339;
         
-    }
+}
 
 .sidebar ul li a.active {
     background-color: #25a59a;

@@ -14,13 +14,14 @@
         {
             <input asp-for="Id" type="hidden" />
         }
-        <div asp-validation-summary="All" class="text-danger"></div>
+        
         <div class="form-group">
             <label asp-for="QuestionType" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select asp-for="QuestionType" asp-items="Html.GetEnumSelectList<QuestionType>()" class="form-control">
                     <option value="">Select a question type</option>
                 </select>
+                <span asp-validation-for="QuestionType" class="text-danger"></span>
             </div>
         </div>
 
@@ -30,6 +31,7 @@
                 <select asp-for="OwnershipId" asp-items="@Model.HR_DM_Managers" class="form-control">
                     <option value="">Select the ownership</option>
                 </select>
+                <span asp-validation-for="OwnershipId" class="text-danger"></span>
             </div>
         </div>
 
