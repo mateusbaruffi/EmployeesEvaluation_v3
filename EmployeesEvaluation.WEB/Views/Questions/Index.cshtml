@@ -1,4 +1,5 @@
-﻿
+﻿<link rel="import" href="~/WebComponents/app-messages.html" />
+
 <div class="location-bar">
     <h2>Questions</h2>
 </div>
@@ -37,3 +38,7 @@
         }
     </div>
 </div>
+@if (TempData["message"] != null)
+{
+    <app-messages auto-load="true" class-name="@TempData["message"]" toast-text="The Question was successfully saved"></app-messages>
+}

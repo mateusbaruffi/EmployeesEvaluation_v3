@@ -1,0 +1,62 @@
+﻿<link rel="import" href="/lib/polymer/polymer.html" />
+<link rel="import" href="/lib/paper-toast/paper-toast.html" />
+<link rel="import" href="/lib/paper-button/paper-button.html" />
+
+
+
+<dom-module id="app-messages">
+    <template>
+
+        
+        <custom-style>
+            <style is="custom-style">
+                #toast2 {
+                    height: 80px;
+                    color: #ffffff;
+                    text-align: center;
+                    font-size: 1.8em;
+                }
+                .toast-success {
+                    
+                    background-color: #4caf50;
+                }
+                .toast-error {
+                    background-color: #f44336;
+                }
+            </style>
+        </custom-style>
+
+        <paper-toast id="toast2" class$="fit-bottom {{className}}" text="{{toastText}}"></paper-toast>
+
+    </template>
+</dom-module>
+<script>
+
+    Polymer({
+        is: 'app-messages',
+        properties: {
+            autoLoad: {
+                type: Boolean,
+                value: false
+            },
+            toastText: {
+                type: String
+            },
+            className: {
+                type: String,
+                value: "toast-success"
+            }
+        },
+        ready: function () {
+            if (this.autoLoad)
+                this.$.toast2.open();
+        },
+        openToast: function () {
+            this.$.toast2.open();
+        }
+
+      
+    });
+
+
+</script>

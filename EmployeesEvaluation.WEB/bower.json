@@ -17,6 +17,7 @@
     "paper-icon-button": "v1.1.6",
     "iron-icons": "v1.2.1",
     "paper-toolbar": "v1.1.7",
-    "paper-autocomplete": "v2.5.1"
+    "paper-autocomplete": "v2.5.1",
+    "paper-toast": "v2.0.0"
   }
 }

@@ -85,6 +85,9 @@ namespace EmployeesEvaluation.WEB.Controllers
                 _questionService.Update(question);
             }
 
+
+            TempData["message"] = "toast-success";
+
             return RedirectToAction("Index", "Questions");
         }
     }
