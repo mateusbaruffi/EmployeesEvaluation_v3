@@ -13,6 +13,7 @@
 <link rel="import" href="/lib/iron-input/iron-input.html" />
 <link rel="import" href="/lib/iron-form/iron-form.html" />
 <link rel="import" href="question-card-form.html" />
+<link rel="import" href="app-messages.html" />
 
 <dom-module id="question-form">
     <template>
@@ -35,7 +36,7 @@
                 <div class="output"></div>
             </form>
         </div>
-
+        <app-messages class-name="{{messageType}}" toast-text="{{messageText}}" id="appMessages"></app-messages>
     </template>
 </dom-module>
 <script>
@@ -63,9 +64,19 @@
         },
         handleSubmitResponse: function (event) {
             console.log(event.detail.response);
+
+            this.messageType = "toast-success";
+            this.messageText = "Question was saved successfully!";
+            this.$.appMessages.openToast();
+
+            setTimeout(function () { window.location.href = "/Questions/Index"; }, 3000);
         }, 
         handleSubmitError: function (event) {
             console.log(event.detail);
+
+            this.messageType = "toast-error";
+            this.messageText = "Sorry, but something went wrong!";
+            this.$.appMessages.openToast();
         }
     });
 
