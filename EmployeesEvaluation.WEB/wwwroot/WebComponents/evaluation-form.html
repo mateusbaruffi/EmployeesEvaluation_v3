@@ -18,11 +18,11 @@
 <link rel="import" href="question-card-form.html" />
 <link rel="import" href="question-card-viewer.html" />
 <link rel="import" href="app-messages.html" />
-
+<link rel="import" href="shared-styles.html" />
 
 <dom-module id="evaluation-form">
     <template>
-        <style>
+        <style include="shared-styles">
 
 
             paper-toolbar {
@@ -82,7 +82,8 @@
         
         <div class="card">
             <form is="iron-form" method="post" action="/Api/Evaluations/Create" id="evaluationsForm" headers = '{"content-type":"application/json"}'>
-
+                <paper-input name="Title" label="Title" value="{{evaluationForm.Title}}" required></paper-input>
+                
                 <paper-dropdown-menu label="Select a Department Manager" required>
                     <paper-listbox class="dropdown-content" selected="{{evaluationForm.DepartmentManagerId}}" attr-for-selected="value">
                         <template is="dom-repeat" items="[[departmentManagers]]" as="departmentManager">
@@ -102,8 +103,7 @@
                 
                 <br />
 
-                <paper-input name="Title" label="Title" value="{{evaluationForm.Title}}" required></paper-input>
-                <br />
+
                 <paper-textarea label="Introduction" value="{{evaluationForm.Introduction}}" required></paper-textarea>
                 <br />
                 New Question Or Use an Existing One

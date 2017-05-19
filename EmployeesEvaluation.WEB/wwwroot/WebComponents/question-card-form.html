@@ -12,19 +12,19 @@
 <link rel="import" href="/lib/iron-ajax/iron-ajax.html" />
 <link rel="import" href="/lib/iron-input/iron-input.html" />
 <link rel="import" href="/lib/iron-form/iron-form.html" />
-
+<link rel="import" href="shared-styles.html" />
 
 <dom-module id="question-card-form">
     <template>
-        <style>
+        <style include="shared-styles">
             .card {
-               
                 padding: 16px;
                 color: #757575;
                 border-radius: 5px;
                 background-color: #fff;
                 box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 1px -2px rgba(0, 0, 0, 0.2);
             }
+
             #answers_container {
                 padding: 22px;
                 color: #757575;
@@ -32,10 +32,15 @@
                 border: dotted 1px #f1f1f1;
                 background-color: #fff;
             }
+
             .input {
                 width: 60%;
             }
+
+
         </style>
+
+
 
         <iron-ajax id="getQuestionTypesAjax"
                    auto
