@@ -111,6 +111,9 @@ namespace EmployeesEvaluation.WEB.Controllers
                 _evaluationService.UpdateWithExistingQuestions(evaluation, evaluationDto.QuestionIds);
             }
 
+            TempData["messageType"] = "toast-success";
+            TempData["messageText"] = "Evaluation has been successfully saved!";
+
             return RedirectToAction("Index", "Evaluations");
         }
 
@@ -141,9 +144,10 @@ namespace EmployeesEvaluation.WEB.Controllers
             {
                 _logger.LogError("-------------- Something went wrong -----------", e);
             }
-            
 
-            return RedirectToAction("Success", "Evaluations");
+            TempData["messageType"] = "toast-success";
+            TempData["messageText"] = "Evaluation has been successfully assigned!";
+            return RedirectToAction("Index", "Evaluations");
         }
 
 
@@ -199,7 +203,11 @@ namespace EmployeesEvaluation.WEB.Controllers
 
             await SendDepartmentManagerEmail(evaluationResponseDto);
 
-            return RedirectToAction("Success", "Evaluations");
+
+            TempData["messageType"] = "toast-success";
+            TempData["messageText"] = "Evaluation has been successfully answered!";
+
+            return RedirectToAction("Responses", "Evaluations");
         }
 
         public IActionResult Success()

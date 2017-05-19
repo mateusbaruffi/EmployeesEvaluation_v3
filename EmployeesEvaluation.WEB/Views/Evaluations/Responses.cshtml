@@ -1,3 +1,4 @@
+<link rel="import" href="~/WebComponents/app-messages.html" />
 
 <div class="location-bar">
     <h2>Evaluations / Responses</h2>
@@ -37,3 +38,7 @@
         }
     </div>
 </div>
+@if (TempData["messageType"] != null)
+{
+    <app-messages auto-load="true" class-name="@TempData["messageType"]" toast-text="@TempData["messageText"]"></app-messages>
+}
