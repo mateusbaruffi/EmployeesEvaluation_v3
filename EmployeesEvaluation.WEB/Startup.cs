@@ -63,6 +63,14 @@ namespace EmployeesEvaluation.WEB
 
             services.AddKendo();
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.CookieName = ".EmployeesEvaluation.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+            });
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
@@ -170,6 +178,8 @@ namespace EmployeesEvaluation.WEB
             app.UseStaticFiles();
 
             app.UseIdentity();
+
+            app.UseSession();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
